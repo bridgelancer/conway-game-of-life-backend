@@ -1,7 +1,10 @@
+"""Flask-SocketIO server for handling websockets transmission"""
 import json
 
 from flask import Flask, render_template
 from flask_socketio import SocketIO, emit
+
+from backend.engine.conway import convert_current_grid
 
 # Standard setup for Flask with SocketIO wrapping
 app = Flask(__name__)
@@ -28,7 +31,7 @@ def test_connect():
 def broadcast_update(event):
     global current_board
     current_board = json.loads(event)['data']
-
+    convert_current_grid(current_board)
     emit('boardUpdated', event, broadcast=True, include_self=False)
     print('Board update broadcasted')
 
