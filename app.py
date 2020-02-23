@@ -10,15 +10,23 @@ app.config['SECRET_KEY'] = 'secret!'
 # cors_allowed_origins options used for simplicity in testing
 socketio = SocketIO(app, cors_allowed_origins='*')
 
+ROWS = 50
+COLUMNS = 100
+
+INIT_CELL = {'color': 'white', 'fixed': False, 'selected': False}
+currentBoard = [[INIT_CELL for c in range(COLUMNS)] for r in range(ROWS)]
+
 @socketio.on('connect', namespace='/test')
 def test_connect():
     print('One client connected...')
 
     emit('confirm connect', {})
-    emit('my response', {'data': 'Server saying hi'})
+    emit('boardUpdated', json.dumps({'data': (currentBoard)}))
 
 @socketio.on('boardUpdate', namespace='/test')
 def broadcast_update(event):
+    global currentBoard
+    currentBoard= json.loads(event)['data']
     emit('boardUpdated', event, broadcast=True, include_self=False)
     print('Board update broadcasted')
 
