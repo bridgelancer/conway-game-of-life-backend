@@ -1,7 +1,8 @@
 """Flask-SocketIO server for handling websockets transmission"""
+import threading
 import json
 
-from flask import Flask, render_template
+from flask import Flask, render_template, current_app
 from flask_socketio import SocketIO, emit
 
 from backend.engine.conway import convert_current_grid
@@ -19,6 +20,21 @@ COLUMNS = 100
 INIT_CELL = {'color': 'white', 'fixed': False, 'selected': False}
 current_board = [[INIT_CELL for c in range(COLUMNS)] for r in range(ROWS)]
 
+thread = None
+
+def comway_thread(app):
+    global current_board
+    i = 0
+    with app.app_context():
+        while True:
+            test_str = f'{i*1} seconds elapsed'
+            current_board = convert_current_grid(current_board)
+            socketio.emit('my response', {'data': test_str}, namespace='/test')
+            socketio.emit('tick', json.dumps({'data': current_board}), namespace='/test')
+            socketio.sleep(1)
+            i += 1
+
+
 @socketio.on('connect', namespace='/test')
 def test_connect():
     print('One client connected...')
@@ -27,11 +43,19 @@ def test_connect():
     emit('boardUpdated', json.dumps({'data': (current_board)}))
     print('Board initiation broadcasted')
 
+    global thread
+    if thread is None:
+        print('starting one thread...')
+        app = current_app._get_current_object()
+        thread = socketio.start_background_task(target=comway_thread, app=app)
+
 @socketio.on('boardUpdate', namespace='/test')
 def broadcast_update(event):
     global current_board
-    current_board = json.loads(event)['data']
-    convert_current_grid(current_board)
+    board = json.loads(event)['data']
+    print(board[0][0], board[0][1], board[1][0],
+            board[1][1])
+    current_board = board
     emit('boardUpdated', event, broadcast=True, include_self=False)
     print('Board update broadcasted')
 

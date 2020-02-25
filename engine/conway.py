@@ -10,7 +10,6 @@ The rules are stated here for a reference.
 """
 def compute_life_cell(neighbour_cells):
     life_cells = [cell for cell in neighbour_cells if cell['fixed']]
-    print(f'Life cell count: {len(life_cells)}')
     if len(life_cells) < 2 or len(life_cells) > 3:
         return False
     else:
@@ -27,6 +26,7 @@ def extract_neighbour_cell(row, col, grid):
     num_of_row = len(grid)
     num_of_col = len(grid[0])
 
+    # refactor this
     neighbour_cells = []
     for r in [row-1, row, row+1]:
         if 0 <= r <= num_of_row-1:
@@ -45,12 +45,11 @@ def convert_current_grid(grid):
             neighbour_cells = extract_neighbour_cell(r, c, grid)
             # might also alter color within functions
             if cell['fixed']:
-                print(r, c)
-                print(f'Neighbour cell count: {len(neighbour_cells)}')
                 fixed = compute_life_cell(neighbour_cells)
-                print(f'Life next round? {fixed} \n')
+                color = 'black'
             else:
                 fixed = compute_dead_cell(neighbour_cells)
-            new_grid[r].append({**cell, 'fixed': fixed})
+                color = 'white'
+            new_grid[r].append({'color': color, 'fixed': fixed, 'selected': False})
 
     return new_grid
