@@ -17,7 +17,7 @@ socketio = SocketIO(app, cors_allowed_origins='*')
 # Initialize current board on server side
 ROWS = 50
 COLUMNS = 100
-INIT_CELL = {'color': 'white', 'fixed': False, 'selected': False}
+INIT_CELL = {'color': 'white', 'fixed': False}
 current_board = [[INIT_CELL for c in range(COLUMNS)] for r in range(ROWS)]
 
 thread = None
@@ -29,9 +29,9 @@ def comway_thread(app):
         while True:
             test_str = f'{i*1} seconds elapsed'
             current_board = convert_current_grid(current_board)
-            socketio.emit('my response', {'data': test_str}, namespace='/test')
+            # socketio.emit('my response', {'data': test_str}, namespace='/test')
             socketio.emit('tick', json.dumps({'data': current_board}), namespace='/test')
-            socketio.sleep(1)
+            socketio.sleep(5)
             i += 1
 
 
@@ -53,8 +53,6 @@ def test_connect():
 def broadcast_update(event):
     global current_board
     board = json.loads(event)['data']
-    print(board[0][0], board[0][1], board[1][0],
-            board[1][1])
     current_board = board
     emit('boardUpdated', event, broadcast=True, include_self=False)
     print('Board update broadcasted')

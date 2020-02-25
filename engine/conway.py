@@ -46,10 +46,13 @@ def convert_current_grid(grid):
             # might also alter color within functions
             if cell['fixed']:
                 fixed = compute_life_cell(neighbour_cells)
-                color = 'black'
             else:
                 fixed = compute_dead_cell(neighbour_cells)
+
+            if fixed:
+                color = 'black'
+            elif not fixed:
                 color = 'white'
-            new_grid[r].append({'color': color, 'fixed': fixed, 'selected': False})
+            new_grid[r].append({'color': color, 'fixed': fixed})
 
     return new_grid
