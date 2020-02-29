@@ -1,6 +1,6 @@
 import pytest
 
-from backend.engine.color import color_mean
+from engine.color import color_mean
 
 
 def test_one_color_mean():

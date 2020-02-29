@@ -5,7 +5,7 @@ import json
 from flask import Flask, render_template, current_app
 from flask_socketio import SocketIO, emit
 
-from backend.engine.conway import convert_current_grid
+from engine.conway import convert_current_grid
 
 # Standard setup for Flask with SocketIO wrapping
 app = Flask(__name__)

@@ -1,4 +1,4 @@
-from .color import color_mean
+from engine.color import color_mean
 """Module to provide functions to compute next state by the Conway rules.
 
 The rules are stated here for a reference.

@@ -1,7 +1,7 @@
 import pytest
 
-from backend.app import INIT_CELL
-from backend.engine.conway import *
+from ..app import INIT_CELL
+from engine.conway import *
 
 
 @pytest.fixture
