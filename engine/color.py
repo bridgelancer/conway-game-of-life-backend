@@ -26,14 +26,15 @@ def color_mean(rgb_lst: List[str]) -> str:
         total_g += g
         total_b += b
 
-    assert total_r < 256
-    assert total_g < 256
-    assert total_b < 256
 
     lst_length: int = len(rgb_lst)
     mean_r: int = int(total_r / lst_length)
     mean_g: int = int(total_g / lst_length)
     mean_b: int = int(total_b / lst_length)
+
+    assert mean_r < 256
+    assert mean_g < 256
+    assert mean_b < 256
 
     # still need to format string to pad 0 for integer case
     return f'#{get_padded_hex(mean_r)}{get_padded_hex(mean_g)}{get_padded_hex(mean_b)}'

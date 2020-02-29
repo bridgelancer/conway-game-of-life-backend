@@ -26,15 +26,11 @@ thread = None
 
 def comway_thread(app):
     global current_board
-    i = 0
     with app.app_context():
         while True:
-            test_str = f'{i*1} seconds elapsed'
             current_board = convert_current_grid(current_board)
-            # socketio.emit('my response', {'data': test_str}, namespace='/test')
             socketio.emit('tick', json.dumps({'data': current_board}), namespace='/test')
             socketio.sleep(TICK_DURATION)
-            i += 1
 
 
 @socketio.on('connect', namespace='/test')
