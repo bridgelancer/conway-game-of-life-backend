@@ -1,3 +1,4 @@
+from .color import color_mean
 """Module to provide functions to compute next state by the Conway rules.
 
 The rules are stated here for a reference.
@@ -11,16 +12,16 @@ The rules are stated here for a reference.
 def compute_life_cell(neighbour_cells):
     life_cells = [cell for cell in neighbour_cells if cell['fixed']]
     if len(life_cells) < 2 or len(life_cells) > 3:
-        return False
+        return '#ffffff', False
     else:
-        return True
+        return color_mean([cell['color']for cell in life_cells]), True
 
 def compute_dead_cell(neighbour_cells):
     life_cells = [cell for cell in neighbour_cells if cell['fixed']]
     if len(life_cells) == 3:
-        return True
+        return color_mean([cell['color'] for cell in life_cells]), True
     else:
-        return False
+        return '#ffffff', False
 
 def extract_neighbour_cell(row, col, grid):
     num_of_row = len(grid)
@@ -45,14 +46,9 @@ def convert_current_grid(grid):
             neighbour_cells = extract_neighbour_cell(r, c, grid)
             # might also alter color within functions
             if cell['fixed']:
-                fixed = compute_life_cell(neighbour_cells)
+                color, fixed = compute_life_cell(neighbour_cells)
             else:
-                fixed = compute_dead_cell(neighbour_cells)
-
-            if fixed:
-                color = 'black'
-            elif not fixed:
-                color = 'white'
+                color, fixed = compute_dead_cell(neighbour_cells)
             new_grid[r].append({'color': color, 'fixed': fixed})
 
     return new_grid
