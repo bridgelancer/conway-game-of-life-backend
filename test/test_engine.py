@@ -1,6 +1,6 @@
 import pytest
 
-from ..app import INIT_CELL
+from app import INIT_CELL
 from engine.conway import *
 
 
