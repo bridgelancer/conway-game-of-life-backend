@@ -1,4 +1,3 @@
-from engine.color import color_mean
 """Module to provide functions to compute next state by the Conway rules.
 
 The rules are stated here for a reference.
@@ -9,6 +8,9 @@ The rules are stated here for a reference.
 4. Any dead cell with exactly three live neighbors becomes a live cell, as if by reproduction.
 
 """
+
+from engine.color import color_mean
+
 def compute_life_cell(neighbour_cells):
     life_cells = [cell for cell in neighbour_cells if cell['fixed']]
     if len(life_cells) < 2 or len(life_cells) > 3:
@@ -24,10 +26,10 @@ def compute_dead_cell(neighbour_cells):
         return '#ffffff', False
 
 def extract_neighbour_cell(row, col, grid):
+    """Get neigbour cells given whole grid, the row index and column index"""
     num_of_row = len(grid)
     num_of_col = len(grid[0])
 
-    # refactor this
     neighbour_cells = []
     for r in [row-1, row, row+1]:
         if 0 <= r <= num_of_row-1:
@@ -39,6 +41,7 @@ def extract_neighbour_cell(row, col, grid):
 
 
 def convert_current_grid(grid):
+    """Returns new grid that has the correct attributes for each cell"""
     new_grid = []
     for r, row in enumerate(grid):
         new_grid.append([])

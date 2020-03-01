@@ -1,4 +1,5 @@
-"""Flask-SocketIO server for handling websockets transmission"""
+"""Flask-SocketIO server for handling SocketIO transmission"""
+
 import threading
 import json
 

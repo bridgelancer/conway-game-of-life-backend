@@ -1,5 +1,5 @@
+"""Module for handling color-related funcitons"""
 from typing import List
-
 
 def get_padded_hex(color_val: int) -> str:
     return hex(color_val)[2:].zfill(2)
